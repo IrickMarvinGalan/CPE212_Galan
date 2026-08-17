@@ -1,0 +1,10 @@
+- name: First Playbook
+  hosts: VMs
+
+  tasks:
+    - name: Send Message
+      debug:
+        msg: "Hello World from {{ nodename }}"
+    - name: Show Operating System
+      debug:
+        msg: "I am using {{ OpSys }}"
