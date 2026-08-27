@@ -1,0 +1,19 @@
+all:
+  children:
+    Ubuntus:
+      vars:
+        OpSys: Ubuntu
+        apache_package: apache2
+        php_package: libapache2-mod-php
+      hosts:
+        server1:
+          ansible_host: 192.168.56.127
+        server2:
+          ansible_host: 192.168.56.128
+        workstation:
+          ansible_host: 192.168.56.126
+
+    VMs:
+      children:
+        Ubuntus:
+        CentOSes:
