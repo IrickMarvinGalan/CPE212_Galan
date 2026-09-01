@@ -3,8 +3,6 @@ all:
     Ubuntus:
       vars:
         OpSys: Ubuntu
-        apache_package: apache2
-        php_package: libapache2-mod-php
       hosts:
         server1:
           ansible_host: 192.168.56.113
@@ -15,8 +13,6 @@ all:
       vars:
         ansible_user: qimagalan
         OpSys: CentOS
-        apache_package: httpd
-        php_package: php
       hosts:
         Galan_CentOS:
           ansible_host: 192.168.56.114
