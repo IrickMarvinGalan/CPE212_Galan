@@ -1,0 +1,5 @@
+---
+- name: Simple Message Task in Ubuntu dbservers
+  debug:
+    msg: "This task is from dbservers_role under tasks/main.yml"
+
