@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  name: Modify file timestamps
+  tasks:
+
+  - name: Create timestamp file
+    ansible.builtin.file:
+      path: "{{ ansible_env.HOME }}/timestamp_test.txt"
+      state: touch
+      access_time: now
+      modification_time: "202609080900.00"

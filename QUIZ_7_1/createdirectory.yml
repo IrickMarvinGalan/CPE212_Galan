@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  name: Create a Directory
+  tasks:
+
+  - name: Create ansible-directory
+    ansible.builtin.file:
+      path: "{{ ansible_env.HOME }}/ansible-directory"
+      state: directory

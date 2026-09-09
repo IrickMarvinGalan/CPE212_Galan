@@ -1,0 +1,13 @@
+---
+
+- name: Create a file with content
+  hosts: all
+  tasks:
+
+  - name: Create student information file
+    ansible.builtin.copy:
+      dest: "{{ ansible_env.HOME }}/student_info.txt"
+      content: |
+        Name: Galan, Irick Marvin A.
+        Course: Computer Engineering
+        Topic: Ansible File Module
