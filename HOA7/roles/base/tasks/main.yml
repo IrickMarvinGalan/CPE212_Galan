@@ -1,0 +1,5 @@
+---
+- name: Prompt the Start of Play Execution
+  ansible.builtin.debug:
+    msg: "Executing the site.yml from Role: Base"
+
