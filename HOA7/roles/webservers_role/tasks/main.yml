@@ -1,0 +1,4 @@
+---
+- name: Simple messaging task in webservers Ubuntu
+  debug:
+    msg: "This is a task from the webservers_role at tasks/main.yml"

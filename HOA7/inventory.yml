@@ -1,0 +1,8 @@
+[web_servers]
+192.168.56.113
+
+[db_servers]
+192.168.56.106
+
+[file_servers]
+192.168.56.114 ansible_user=qimagalan

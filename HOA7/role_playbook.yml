@@ -1,0 +1,9 @@
+- hosts: web_servers
+  roles:
+    - role: webservers_role
+      tags: web
+
+- hosts: db_servers
+  roles:
+    - role: dbservers_role
+      tags: db
