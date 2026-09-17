@@ -1,0 +1,24 @@
+---
+
+- name: Run nagios configure script
+  ansible.builtin.command:
+    cmd: ./configure --with-command-group=nagcmd
+    chdir: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.2.1"
+    creates: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.2.1/MakeFile" #ensures config only runs once
+
+- name: Compile Nagios Core
+  ansible.builtin.command:
+    cmd: make all
+    chdir: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.2.1"
+    creates: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.2.1/base/nagios"
+
+- name: Compile Nagios binaries
+  ansible.builtin.command:
+    cmd: "make {{ item }}"
+    chdir: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.2.1"
+  loop:
+    - install
+    - install-init
+    - install-config
+    - install-commandmode
+
