@@ -1,0 +1,25 @@
+---
+
+- name: Install apache2 (Ubuntu)
+  apt:
+    name: apache2
+    state: latest
+  when: "{{ ansible_distribution }} == Ubuntu"
+
+- name: Install apache2 (CentOS)
+  dnf:
+    name: httpd
+    state: latest
+  when: "{{ ansible_distribution }} == CentOS"
+
+- name: Install PHP (Ubuntu)
+  apt:
+    name: libapache2-mod-php
+    state: latest
+  when: "{{ ansible_distribution }} == Ubuntu"
+
+- name: Install PHP (CentOS)
+  dnf:
+    name: php
+    state: latest
+  when: "{{ ansible_distribution }} == CentOS"

@@ -1,0 +1,12 @@
+---
+
+- hosts: localhost
+  become: true
+  roles:
+    - initsoftware
+    - creategrp
+
+- hosts: localhost
+  roles:
+    - downloader
+    - compiler

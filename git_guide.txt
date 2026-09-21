@@ -1,0 +1,8 @@
+To view branches: git branch
+To create another branch: git branch <new_branch>
+To switch brances: git checkout <target_branch>
+To view commit hashes: git log --oneline
+To restore to an earlier commt from the local repo: git reset --hard <hash>
+To merge branches together:
+	- move to branch to apply the merge into
+	- run: git merge <source_branch>

@@ -1,0 +1,30 @@
+---
+
+- name: Setup nagios and nagcmd group
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+    system: true
+  loop:
+    - nagios
+    - nagcmd
+
+- name: Create nagios user
+  ansible.builtin.user:
+    name: nagios
+    home: /home/nagios
+    create_home: true
+    shell: /bin/bash
+    system: true
+    state: present
+    groups:
+      - nagios
+      - nagcmd
+    append: true
+
+- name: Assign apache2 to nagcmd
+  ansible.builtin.user:
+    name: www-data
+    groups:
+      - nagcmd
+    append: true
