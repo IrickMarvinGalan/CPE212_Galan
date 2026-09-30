@@ -1,0 +1,8 @@
+[web_servers]
+192.168.56.127 ansible_become_user=root
+
+[db_servers]
+192.168.56.128 ansible_become_user=root
+
+[file_servers]
+192.168.56.129 ansible_user=qimagalan ansible_become_user=root

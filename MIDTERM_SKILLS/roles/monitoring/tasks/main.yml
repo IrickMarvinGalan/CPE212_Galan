@@ -1,0 +1,132 @@
+---
+
+#- name: Prepare the Servers (Ubuntu)
+#  become: true
+#  ansible.builtin.apt:
+#    update_cache: true
+#    state: latest
+#  when: ansible_distribution == "Ubuntu"
+
+- name: Prepare the Servers (CentOS)
+  become: true
+  ansible.builtin.dnf:
+    update_cache: true
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: Create the Prometheus User
+  become: true
+  ansible.builtin.user:
+    name: prometheus
+    home: /home/prometheus
+    create_home: true
+    shell: /sbin/nologin
+    system: true
+    state: present
+
+- name: Create the necessary directories for prometheus
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: prometheus
+    group: prometheus
+    mode: "0665"
+    state: directory
+  loop:
+    - "/etc/prometheus"
+    - "/var/lib/prometheus"
+
+- name: Download the prometheus package from link
+  ansible.builtin.get_url:
+    url: "https://github.com/prometheus/prometheus/releases/download/v3.13.3/prometheus-3.13.3.linux-amd64.tar.gz"
+    dest: "{{ ansible_env.HOME }}/Downloads"
+
+- name: Create temp directory for prometheus installation
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/prometheus"
+    state: directory
+
+- name: Extract the tar files
+  ansible.builtin.unarchive:
+    src: "{{ ansible_env.HOME }}/Downloads/prometheus-3.13.3.linux-amd64.tar.gz"
+    dest: "{{ansible_env.HOME }}/prometheus"
+    remote_src: true
+
+- name: Copy the prometheus bin
+  become: true
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/prometheus/prometheus-3.13.3.linux-amd64/prometheus"
+    dest: "/usr/local/bin/prometheus"
+    mode: "0665"
+    owner: prometheus
+    group: prometheus
+    remote_src: true
+
+- name: Copy the promtool bin
+  become: true
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/prometheus/prometheus-3.13.3.linux-amd64/promtool"
+    dest: "/usr/local/bin/promtool"
+    mode: "0665"
+    owner: prometheus
+    group: prometheus
+    remote_src: true
+
+- name: Copy the configuration file to /etc
+  become: true
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/prometheus/prometheus-3.13.3.linux-amd64/prometheus.yml"
+    dest: "/etc/prometheus/prometheus.yml"
+    mode: "0665"
+    owner: prometheus
+    group: prometheus
+    remote_src: true
+
+#- name: Procure the consoles and console_libraries with apt
+#  become: true
+#  ansible.builtin.apt:
+#    name: prometheus
+#    state: present
+#  when: ansible_distribution == "Ubuntu"
+
+- name: Procure the consoles and console_libraries with dnf
+  become: true
+  ansible.builtin.dnf:
+    name: prometheus
+    state: present
+  when: ansible_distribution == "CentOS"
+
+- name: Create the daemon file
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/prometheus.service"
+    content: |
+      [Unit]
+      Description=Prometheus Monitoring
+      Wants=network-online.target
+      After=network-online.target
+
+      [Service]
+      User=prometheus
+      Group=prometheus
+      Type=simple
+      ExecStart=/usr/local/bin/prometheus \
+        --config.file=/etc/prometheus/prometheus.yml \
+        --storage.tsdb.path=/var/lib/prometheus
+
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Restart the the systemd daemon
+  become: true
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: Start the prometheus service
+  become: true
+  ansible.builtin.service:
+    name: prometheus
+    started: true
+    enabled: true

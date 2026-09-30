@@ -1,0 +1,7 @@
+---
+
+- hosts:
+    - web_servers
+    - file_servers
+  roles:
+    - monitoring

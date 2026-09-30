@@ -1,0 +1,33 @@
+---
+
+- name: Create the daemon file
+  ansible.builtin.copy:
+    dest: "/etc/systemd/system/prometheus.service"
+    content: |
+      [Unit] 
+      Description=Prometheus Monitoring
+      Wants=network-online.target
+      After=network-online.target
+
+      [Service]
+      User=prometheus
+      Group=prometheus
+      Type=simple
+      ExecStart=/usr/local/bin/prometheus \
+        --config.file=/etc/prometheus/prometheus.yml \
+        --storage.tsdb.path=/var/lib/prometheus
+
+      Restart=on-failure
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Restart the the systemd daemon
+  ansible.builtin.service:
+    daemon_reload: true
+
+- name: Start the prometheus service
+  ansible.builtin.service:
+    name: prometheus
+    started: true
+    enabled: true
