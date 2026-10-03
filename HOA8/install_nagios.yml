@@ -1,12 +1,14 @@
 ---
 
-- hosts: localhost
+- hosts:
+    - localhost
+    - file_servers
   become: true
   roles:
     - initsoftware
     - creategrp
 
-- hosts: localhost
+- hosts: localhost, file_servers
   roles:
     - downloader
-    - compiler
+#    - compiler

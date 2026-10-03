@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Updates</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+    form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    input { flex: 1; padding: 0.5rem; }
+    button { padding: 0.5rem 1rem; cursor: pointer; }
+    #error { color: #b00020; min-height: 1.2em; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0; border-bottom: 1px solid #ddd; }
+    .content { flex: 1; }
+    .actions { display: flex; gap: 0.4rem; }
+    small { display: block; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Updates</h1>
+
+  <form id="update-form">
+    <input id="text" type="text" placeholder="Write an update..." required />
+    <button type="submit">Post</button>
+  </form>
+  <p id="error"></p>
+
+  <ul id="updates"></ul>
+
+  <script>
+    const form = document.getElementById("update-form");
+    const input = document.getElementById("text");
+    const list = document.getElementById("updates");
+    const errorBox = document.getElementById("error");
+
+    // Fetch all updates from the API and show them
+    async function loadUpdates() {
+      const res = await fetch("/updates");
+      const updates = await res.json();
+
+      list.innerHTML = "";
+      for (const u of updates) {
+        list.appendChild(renderItem(u));
+      }
+    }
+
+    function makeButton(label, onClick) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label;
+      b.addEventListener("click", onClick);
+      return b;
+    }
+
+    function showError(message) {
+      errorBox.textContent = message;
+    }
+
+    // Build one list row for an update
+    function renderItem(u) {
+      const li = document.createElement("li");
+
+      const content = document.createElement("div");
+      content.className = "content";
+
+      const text = document.createElement("span");
+      text.textContent = u.text; // textContent keeps user input from running as HTML
+
+      const time = document.createElement("small");
+      const edited = u.updatedAt !== u.createdAt;
+      time.textContent =
+        new Date(u.createdAt).toLocaleString() + (edited ? " (edited)" : "");
+
+      content.append(text, time);
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+      actions.append(
+        makeButton("Edit", () => startEdit(li, u)),
+        makeButton("Delete", () => deleteUpdate(u._id))
+      );
+
+      li.append(content, actions);
+      return li;
+    }
+
+    // Swap the row into an edit box with Save / Cancel
+    function startEdit(li, u) {
+      li.innerHTML = "";
+
+      const editInput = document.createElement("input");
+      editInput.value = u.text;
+
+      li.append(
+        editInput,
+        makeButton("Save", () => saveEdit(u._id, editInput.value)),
+        makeButton("Cancel", loadUpdates)
+      );
+      editInput.focus();
+    }
+
+    // Send the edited text to PUT /updates/:id
+    async function saveEdit(id, text) {
+      showError("");
+      const res = await fetch("/updates/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        showError(data.error || "Something went wrong");
+        return;
+      }
+      loadUpdates();
+    }
+
+    // Ask for confirmation, then call DELETE /updates/:id
+    async function deleteUpdate(id) {
+      if (!confirm("Delete this update?")) return;
+      showError("");
+
+      const res = await fetch("/updates/" + id, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json();
+        showError(data.error || "Something went wrong");
+        return;
+      }
+      loadUpdates();
+    }
+
+    // Send the typed text to the API when the form is submitted
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault(); // stops the page from reloading
+      errorBox.textContent = "";
+
+      const res = await fetch("/updates", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: input.value }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        errorBox.textContent = data.error || "Something went wrong";
+        return;
+      }
+
+      input.value = "";
+      loadUpdates();
+    });
+
+    loadUpdates();
+  </script>
+</body>
+</html>
