@@ -9,8 +9,7 @@ starting and enabling services).
 scalability, and maintainability.
 
 ## Summary
-In this activity students will recall package installations, and be guided how to automate basic service management through the ansible.builtin.service module. The concept of tags would also be introduced
-to allow running only specific section of playbooks when necessary. Creating roles to modularize ansible playbooks will also be done in this laboratory.
+In this activity students will recall package installations, and be guided how to automate basic service management through the ansible.builtin.service module. Targeting specific groups in the invetory file will also be used in this activity to provide idea how to execute commands exclusively for selected hosts. The concept of tags would also be introduced to allow running only specific section of playbooks when necessary. Creating roles to modularize ansible playbooks will also be done in this laboratory.
 
 ## Key Concepts/Commands and Description
 #### Pretasks
