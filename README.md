@@ -5,7 +5,9 @@
 #### Utilizing SSH Key Authentications for Remote and Git Access
 #### Basic Ansible Skills
   > Ad Hoc Commands for simple diagnostics/commands
+
   > Creating Plays for Automating Routine Commands
+
   > Privilege Escalation with Ad Hoc Commands and Playbooks
 #### Automating Service Configurations
 #### Creating Package Installers
