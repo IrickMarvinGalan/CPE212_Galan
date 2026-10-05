@@ -36,9 +36,11 @@
   > Learn the differences between public and private keys
 
 ##### HOA 3 - Installing SSH Server on CentOS or RHEL
-  >
+  > Install Open-SSH server using dnf package manager
+
+  > Learn firewall management for SSH connections using firewall-cmd in RedHat OS
 ##### HOA 4 - Ansible Basics
-  >
+  > 
 ##### HOA 5 - Implement Ansible Roles in Playbooks
   >
 ##### HOA 6 - Targeting Specific Nodes
