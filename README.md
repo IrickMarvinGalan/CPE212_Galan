@@ -10,7 +10,7 @@
 
   > Privilege Escalation with Ad Hoc Commands and Playbooks
 #### Automating Service Configurations
-#### Creating Package Installers
+#### Creating Package Installers and Configuration Automation
 #### Using Docker to Containerize Applications
 
 ## Concepts Used
