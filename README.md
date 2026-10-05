@@ -29,7 +29,12 @@
   > Configure ufw to allow SSH connections in Ubuntu
 
 ##### HOA 2 - SSH Key-Based Authentication and Git Setup
-  >
+  > Generate SSH keys with ssh-keygen command for passwordless remote logins
+
+  > Learn to manage specific SSH Keys through ssh-copy-id and authorized_keys files in the target remote host
+
+  > Learn the differences between public and private keys
+
 ##### HOA 3 - Installing SSH Server on CentOS or RHEL
   >
 ##### HOA 4 - Ansible Basics
