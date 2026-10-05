@@ -40,11 +40,17 @@
 
   > Learn firewall management for SSH connections using firewall-cmd in RedHat OS
 ##### HOA 4 - Ansible Basics
-  > 
+  > Administer Ansible Ad-Hoc Commands for single line command executions and basic diagnostic commands like ping
+
+  > Create ansible playbook to simplify package installation and repository updates
 ##### HOA 5 - Implement Ansible Roles in Playbooks
-  >
+  > Use when commands to control play execution according to specific conditions
+  
+  > Use apt and dnf modules to manage package installations
+
+  > Learn playbook refactorization to simplify yaml code
 ##### HOA 6 - Targeting Specific Nodes
-  >
+  > 
 ##### HOA 7 - Managing Files and Creating Roles in Ansible
   >
 ##### HOA 8 - Installing Nagios
