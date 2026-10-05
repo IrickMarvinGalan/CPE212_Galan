@@ -29,8 +29,9 @@
 ##### HOA 8 - Installing Nagios
 ##### HOA 10 - Install and Configure Elastic Stack (ELK)
 
+-------
 ## Concepts Used
-
+-------
 
 
 ## About this Repository
