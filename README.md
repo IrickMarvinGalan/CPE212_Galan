@@ -50,9 +50,11 @@
 
   > Learn playbook refactorization to simplify yaml code
 ##### HOA 6 - Targeting Specific Nodes
-  > 
+  > Learn how groups in inventory could be used to target specific nodes for ansible-playbook execution
+  
+  > Manage services using ansible service module such as starting and enabling services
 ##### HOA 7 - Managing Files and Creating Roles in Ansible
-  >
+  > 
 ##### HOA 8 - Installing Nagios
   >
 ##### HOA 10 - Install and Configure Elastic Stack (ELK)
