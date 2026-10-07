@@ -66,7 +66,7 @@
 
   > Use the ansible builtin command module to execute shell commands
 ##### HOA 10 - Install and  Configure Elastic Stack (ELK)
-  >
+  > Apply the use of registers to storing vital standard output such as enrolment tokens
 
 -------
 ## Concepts Used
