@@ -55,11 +55,15 @@
   > Manage services using ansible service module such as starting and enabling services
 ##### HOA 7 - Managing Files and Creating Roles in Ansible
   > Make use of ansible roles to properly breakdown structure according to inventory groups
+
   > Utilize tags to skip repetitive tasks in playbook execution
+
   > Apply get_url and unarchive modules to manage package installation from links
 ##### HOA 8 - Installing Nagios
   > Get acquainted with setting up monitoring tools from official documentations
+
   > Learn to create system groups and users with ansible users and groups module for managing daemon services
+
   > Use the ansible builtin command module to execute shell commands
 ##### HOA 10 - Install and  Configure Elastic Stack (ELK)
   >
