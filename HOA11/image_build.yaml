@@ -33,3 +33,4 @@
         name: "{{ image_name }}:{{ image_tag }}"
         repository:
           - "{{ image_name }}:latest"
+      when: inventory_hostname == "control-node"
