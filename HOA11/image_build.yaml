@@ -26,7 +26,7 @@
       retries: 5
       delay: 5
       until: image_build is succeeded
-      when: "{{ inventory_hostname }}" == "control-node"
+      when: inventory_hostname == "control-node"
 
     - name: Also tag the image as latest
       community.docker.docker_image_tag:
