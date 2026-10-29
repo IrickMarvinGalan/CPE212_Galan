@@ -1,0 +1,22 @@
+---
+
+- name: Retain home directory before privilege escalation
+  ansible.builtin.set_fact:
+    normal_home: "{{ ansible_env.HOME }}"
+
+- name: Install the Web Interface for Nagios
+  become: true
+  ansible.builtin.command:
+    cmd: "make install-webconf"
+    chdir: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12"
+    creates: "/etc/apache2/sites-enabled/nagios.conf"
+
+- name: Create nagios http admin for web interface
+  become: true
+  community.general.htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: "nagiosadmin"
+    owner: root
+    group: www-data
+    mode: "0640"

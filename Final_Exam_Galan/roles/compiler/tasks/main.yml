@@ -1,0 +1,48 @@
+---
+
+- name: Retain home directory before privilege escalation
+  become: false
+  ansible.builtin.set_fact: #Prevents the directory from defaulting to root during become: true
+    normal_home: "{{ ansible_env.HOME }}"
+
+- name: Run nagios configure script
+  ansible.builtin.command:
+    cmd: ./configure --with-command-group=nagcmd
+    chdir: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12"
+    creates: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12/Makefile" #ensures config only runs once
+
+- name: Compile Nagios Core
+  ansible.builtin.command:
+    cmd: make all
+    chdir: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12"
+    creates: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12/base/nagios"
+
+- name: Compile Nagios binaries
+  become: true
+  ansible.builtin.command:
+    cmd: "make {{ item }}"
+    chdir: "{{ normal_home }}/NagiosDownloads/nagioscore-nagios-4.5.12"
+  loop:
+    - install
+    - install-init
+    - install-config
+    - install-commandmode
+
+- name: Configure Plugins
+  ansible.builtin.command:
+    cmd: ./configure --with-nagios-user=nagios --with-nagios-group=nagios
+    chdir: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8"
+    creates: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8/Makefile"
+
+- name: Compile Plugins
+  ansible.builtin.command:
+    cmd: make
+    chdir: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8"
+    creates: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8/Installed"
+
+- name: Install Plugins
+  become: true
+  ansible.builtin.command:
+    cmd: make install
+    chdir: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8"
+    creates: "{{ normal_home }}/NagiosDownloads/nagios-plugins-2.4.8/Installed"

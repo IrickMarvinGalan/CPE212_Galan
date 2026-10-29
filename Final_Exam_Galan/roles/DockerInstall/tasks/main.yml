@@ -1,0 +1,27 @@
+- name: Install Docker using the steps for this OS family
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}.yml"
+
+- name: Start Docker now and on every boot
+  become: true
+  ansible.builtin.systemd_service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Let the SSH user run docker without sudo
+  become: true
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  loop: "{{ docker_users }}"
+
+- name: Show the installed Docker version
+  become: true
+  ansible.builtin.command: docker version --format '{{ "{{" }} .Server.Version {{ "}}" }}'
+  register: docker_version
+  changed_when: false
+
+- name: Report Docker version
+  ansible.builtin.debug:
+    msg: "{{ inventory_hostname }} ({{ ansible_distribution }} {{ ansible_distribution_version }}) runs Docker {{ docker_version.stdout }}"

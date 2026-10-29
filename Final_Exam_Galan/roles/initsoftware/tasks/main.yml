@@ -1,0 +1,30 @@
+---
+
+- name: Install nagios dependencies (Ubuntu)
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+      - libgd-dev
+      - build-essential
+      - openssl
+      - libssl-dev
+      - python3-passlib
+    state: present
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install nagios dependencies (CentOS)
+  dnf:
+    name:
+      - httpd
+      - php
+      - gcc
+      - glibc-common
+      - gd
+      - gd-devel
+      - openssl
+      - openssl-devel
+      - python3-passlib
+      - chkconfig
+    state: present
+  when: ansible_distribution == "CentOS"

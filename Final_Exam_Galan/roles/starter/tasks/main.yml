@@ -1,0 +1,19 @@
+---
+
+- name: Restart Apache service after account configuration (Ubuntu)
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+  when: ansible_distribution == "Ubuntu"
+
+- name: Restart Apache service affter account configuration (CentOS)
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+  when: ansible_distribution == "CentOS"
+
+- name: Start and Enable Nagios Core
+  ansible.builtin.service:
+    name: nagios
+    state: started
+    enabled: true

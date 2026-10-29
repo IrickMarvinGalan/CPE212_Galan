@@ -1,0 +1,29 @@
+---
+
+- name: Create download destination
+  become: false
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/NagiosDownloads"
+    state: directory
+
+- name: Download nagios
+  become: false
+  ansible.builtin.get_url:
+    url: "https://github.com/NagiosEnterprises/nagioscore/archive/refs/tags/nagios-4.5.12.tar.gz"
+    dest: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.5.12.tar.gz"
+
+- name: Download nagios plugins
+  become: false
+  ansible.builtin.get_url:
+    url: "https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.4.8/nagios-plugins-2.4.8.tar.gz"
+    dest: "{{ ansible_env.HOME }}/NagiosDownloads/nagios-plugins-2.4.8.tar.gz"
+
+- name: Decompress downloaded files
+  become: false
+  ansible.builtin.unarchive:
+    src: "{{ item }}"
+    dest: "{{ ansible_env.HOME }}/NagiosDownloads"
+    remote_src: true
+  loop:
+    - "{{ ansible_env.HOME }}/NagiosDownloads/nagios-4.5.12.tar.gz"
+    - "{{ ansible_env.HOME }}/NagiosDownloads/nagios-plugins-2.4.8.tar.gz"

@@ -1,0 +1,15 @@
+- name: Build the image for Nagios
+  hosts: webservers
+  vars:
+    image_name: Galan_NagiosContainer
+    image_tag: "1.0
+    portfolio_containers:
+      - name: portfolio-web
+        host_port: 8080"
+    docker_users:
+      - "{{ ansible_user }}"
+
+  roles:
+    - role: DockerInstall
+      tags: install
+

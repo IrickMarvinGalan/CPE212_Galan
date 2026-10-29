@@ -1,0 +1,39 @@
+---
+- hosts:
+    - webservers
+  become: true
+
+  pre_tasks:
+    - name: Update repository list (Ubuntu)
+      apt:
+        update_cache: true
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Update repository list (CentOS)
+      dnf:
+        update_cache: true
+      when: ansible_distribution == "CentOS"
+
+- hosts:
+    - webservers
+  become: true
+  roles:
+    - initsoftware
+    - creategrp
+
+- hosts:
+    - webservers
+  roles:
+    - downloader
+
+- hosts:
+    - webservers
+  roles:
+    - compiler
+    - acctconfigure
+
+- hosts:
+    - webservers
+  become: true
+  roles:
+    - starter
